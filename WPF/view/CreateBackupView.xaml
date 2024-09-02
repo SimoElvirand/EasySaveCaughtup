@@ -1,0 +1,88 @@
+﻿<Page x:Class="WPF.view.CreateBackupView"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:WPF.view"
+      mc:Ignorable="d" 
+      d:DesignHeight="550" d:DesignWidth="800"
+      Title="CreateBackupView">
+
+    <Grid Background="#FFF4F4F4" >
+        <!-- Define 5 rows -->
+        <Grid.RowDefinitions>
+            <RowDefinition Height="90"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="90"/>
+        </Grid.RowDefinitions>
+
+
+
+        <!-- First row content -->
+        <TextBlock Text="{DynamicResource create_backup_job}" Grid.Row="0"  HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="40" FontFamily="Segoe UI Semibold" Margin="0,14,0,0" Foreground="#FF575959"/>
+        <!-- Second row content with 3 columns -->
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="200"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="200"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0" Text="{DynamicResource backup_name}" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="20" FontFamily="Segoe UI Semibold" Foreground="#FF575959"/>
+            <TextBox Text="{Binding Name}" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20" Width="362" TextAlignment="Center"/>
+        </Grid>
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width=" 200"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="200"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0" Text="{DynamicResource backup_source}" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="20" FontFamily="Segoe UI Semibold" Foreground="#FF575959"/>
+            <TextBox Text="{Binding SourceDirectoryy}" Name="sourcePath" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="20" Width="364" TextAlignment="Center"/>
+            <Button Grid.Column="2" Content="{DynamicResource browse}" HorizontalAlignment="Left" VerticalAlignment="Center" Width="50" Click="Source_File_Window_Button" Background="#FFF89344" Foreground="White"/>
+        </Grid>
+        <Grid Grid.Row="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="200"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="200"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0" Text="{DynamicResource backup_destination}" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="20" FontFamily="Segoe UI Semibold" Foreground="#FF575959"/>
+            <TextBox Text="{Binding DestinationDirectory}" Name="targetPath" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="20" Width="364" TextAlignment="Center"/>
+            <Button Grid.Column="2" Content="{DynamicResource browse}" HorizontalAlignment="Left" VerticalAlignment="Center" Width="50" Click="Destination_File_Window_Button" Background="#FFF89344" Foreground="White"/>
+        </Grid>
+        <Grid Grid.Row="4">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="200"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="200"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0" Text="{DynamicResource backup_type}" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="20" FontFamily="Segoe UI Semibold" Foreground="#FF575959"/>
+            <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="25,0,0,0" Orientation="Horizontal">
+                <RadioButton Content="{DynamicResource differential}" Name="radioButtonOption1" Margin="0,0,40,0" VerticalAlignment="Center" IsChecked="{Binding IsDifferentialBackup, Mode=TwoWay}" Foreground="#FF575959"/>
+                <RadioButton Content="{DynamicResource full}" Name="radioButtonOption2" VerticalAlignment="Center" IsChecked="{Binding IsFullBackup, Mode=TwoWay}" Foreground="#FF575959"/>
+            </StackPanel>
+        </Grid>
+        <Grid Grid.Row="5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="200"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="200"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0" Text="{DynamicResource backup_log_type}" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="20" FontFamily="Segoe UI Semibold" Foreground="#FF575959"/>
+            <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="25,0,0,0" Orientation="Horizontal">
+                <CheckBox Content="XML" Margin="0,0,75,0" IsChecked="{Binding IsXmlLogType, Mode=TwoWay}" Foreground="#FF575959"/>
+                <CheckBox Content="JSON" IsChecked="{Binding IsJsonLogType, Mode=TwoWay}" Foreground="#FF575959"/>
+            </StackPanel>
+        </Grid>
+        <Grid Grid.Row="6">
+            <Button Command="{Binding AddBackupCommand}" Content="{DynamicResource create}" Height="30" Width="110" FontSize="16" FontFamily="Segoe UI Semibold" Background="#FFF89344" Foreground="White">
+            </Button>
+        </Grid>
+
+        <!-- Fifth row content -->
+    </Grid>
+</Page>

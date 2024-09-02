@@ -1,0 +1,42 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:system="clr-namespace:System;assembly=mscorlib">
+    <system:String x:Key="create">Créer</system:String>
+    <system:String x:Key="edit">Modifier la sauvegarde</system:String>
+    <system:String x:Key="delete">Supprimer la sauvegarde</system:String>
+    <system:String x:Key="run_selected">Exécuter la sélection</system:String>
+    <system:String x:Key="backup_name">Nom de la sauvegarde</system:String>
+    <system:String x:Key="backup_source">Chemin source</system:String>
+    <system:String x:Key="backup_destination">Chemin de destination</system:String>
+    <system:String x:Key="backup_log_type">Fichier de journal</system:String>
+    <system:String x:Key="backup_type">Type de sauvegarde</system:String>
+    <system:String x:Key="language">Choisissez la langue</system:String>
+    <system:String x:Key="create_backup_job">Créer un job de sauvegarde</system:String>
+    <system:String x:Key="differential">Différentiel</system:String>
+    <system:String x:Key="full">Complet</system:String>
+    <system:String x:Key="browse">Parcourir</system:String>
+    <system:String x:Key="log">Journal</system:String>
+    <system:String x:Key="type">Type</system:String>
+    <system:String x:Key="backup_job_well_create">Le job de sauvegarde a été créé avec succès</system:String>
+    <system:String x:Key="backup_job_well_edit">Le job de sauvegarde a été modifié avec succès</system:String>
+    <system:String x:Key="backup_job_well_run">Le job de sauvegarde a été exécuté avec succès</system:String>
+    <system:String x:Key="all_backup_job_well_run">Tous les jobs de sauvegarde ont été exécutés avec succès</system:String>
+    <system:String x:Key="missing_fields">Un ou plusieurs champs sont manquants</system:String>
+    <system:String x:Key="error">Erreur</system:String>
+    <system:String x:Key="path_not_found">Chemin non trouvé</system:String>
+    <system:String x:Key="all_backup_jobs_running">Tous les jobs de sauvegarde sont en cours d'exécution</system:String>
+    <system:String x:Key="backup_job_running">Un job de sauvegarde est en cours d'exécution</system:String>
+    <system:String x:Key="select_all">Sélectionner tout</system:String>
+    <system:String x:Key="ecnryption_extension">Extentions de encryption </system:String>
+    <system:String x:Key="log_path">Emplacement des fichiers log</system:String>
+    <system:String x:Key="save">Sauvegarder</system:String>
+    <system:String x:Key="lastRuned">Dernière fois demarer</system:String>
+
+
+
+
+
+
+
+
+</ResourceDictionary>

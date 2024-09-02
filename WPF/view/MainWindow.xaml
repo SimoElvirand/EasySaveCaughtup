@@ -1,0 +1,28 @@
+﻿<Window x:Class="WPF.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WPF" 
+        xmlns:local2="clr-namespace:WPF.view.components"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="550" Width="855">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="55"/>
+            <ColumnDefinition/>
+
+        </Grid.ColumnDefinitions>
+
+        <Image Source="assets/logopng.png" Width="28" Height="28" Margin="0,10,0,0" VerticalAlignment="Top" />
+        <ListBox x:Name="sidebar" SelectionMode="Single" SelectionChanged="sidebar_SelectionChanged" Grid.Column="0" Margin="0,50,0,0" BorderThickness="0">
+            <local2:CustomNavigationButton NavUri="view/CreateBackupView.xaml" Margin="3" Padding="6" ImageSource="assets\add.png" />
+            <local2:CustomNavigationButton NavUri="view/EditBackupView.xaml" Margin="3" Padding="6" ImageSource="assets\edit.png"/>
+            <local2:CustomNavigationButton NavUri="view/DeleteBackupView.xaml" Margin="3" Padding="6" ImageSource="assets\delete.png"/>
+            <local2:CustomNavigationButton NavUri="view/progresbar.xaml" Margin="3" Padding="6" ImageSource="assets\log.png"/>
+            <local2:CustomNavigationButton NavUri="view/SettingsView.xaml" Margin="3" Padding="6" ImageSource="assets\cogwheel.png" VerticalAlignment="Bottom"/>
+        </ListBox>
+
+        <Frame Grid.Column="1" x:Name="navframe" NavigationUIVisibility="Hidden" Background="#FFF4F4F4" />
+    </Grid>
+</Window>

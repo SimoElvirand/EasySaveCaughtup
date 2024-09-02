@@ -1,0 +1,104 @@
+﻿<Page x:Class="WPF.view.SettingsView"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:emoji="clr-namespace:Emoji.Wpf;assembly=Emoji.Wpf"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:WPF.view"
+      
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="SettingsView">
+
+    <Grid Background="#FFF4F4F4">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="120"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="80"/>
+            <RowDefinition Height="50"/>
+            <!-- Auto-sized row for language selector -->
+            <RowDefinition Height="*"/>
+            <!-- The rest of the space available -->
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,50,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="100" />
+                <ColumnDefinition Width="200" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0" Text="{DynamicResource language}" Margin="0,0,0,0" VerticalAlignment="Top" FontFamily="Segoe UI Semibold" Foreground="#FF575959" TextAlignment="Center"/>
+            <StackPanel Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <ComboBox x:Name="LanguageComboBox" Width="150" SelectionChanged="LanguageComboBox_SelectionChanged">
+                    <StackPanel Orientation="Horizontal" Tag="en">
+                        <emoji:TextBlock FontSize="24" Text="🇺🇸"/>
+                        <TextBlock Text="English" VerticalAlignment="Center"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Tag="fr">
+                        <emoji:TextBlock FontSize="24" Text="🇫🇷"/>
+                        <TextBlock Text="French" VerticalAlignment="Center"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Tag="ar">
+                        <emoji:TextBlock FontSize="24" Text="🇩🇿"/>
+                        <TextBlock Text="Arabic" VerticalAlignment="Center"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Tag="es">
+                        <emoji:TextBlock FontSize="24" Text="🇪🇸"/>
+                        <TextBlock Text="Español" VerticalAlignment="Center"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Tag="ch">
+                        <emoji:TextBlock FontSize="24" Text="🇨🇳"/>
+                        <TextBlock Text="Chinese" VerticalAlignment="Center"/>
+                    </StackPanel>
+
+
+                    <!-- Add more languages as needed -->
+                </ComboBox>
+                <TextBlock x:Name="SelectedLanguageText" Margin="0,10,0,0"/>
+            </StackPanel>
+
+        </Grid>
+        <Grid Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="200" />
+                <ColumnDefinition Width="400" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0" Text="{DynamicResource ecnryption_extension}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20" FontFamily="Segoe UI Semibold" Foreground="#FF575959"/>
+            <TextBox Grid.Column ="1" Text="{Binding Extentions}" Name="extensions" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0" Width="300" FontSize="24" TextAlignment="Center" Height="Auto"/>
+            <Button Grid.Column="2" Content="{DynamicResource save}" Command="{Binding saveExtensionsCommand}" MinWidth="70" HorizontalAlignment="Center" VerticalAlignment="Center" Width="Auto"  Foreground="White" Background="#FFF89344" FontFamily="Segoe UI Semibold"/>
+
+        </Grid>
+        <Grid Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="200" />
+                <ColumnDefinition Width="400" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0" Text="{DynamicResource log_path}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20" FontFamily="Segoe UI Semibold" Foreground="#FF575959"/>
+            <TextBox Grid.Column ="1" Text="{Binding logPath}" Name="logPath" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0" Width="300" FontSize="24" TextAlignment="Center" Height="Auto"/>
+            <Button Grid.Column="2" Content="{DynamicResource save}" HorizontalAlignment="Center" VerticalAlignment="Center" MinWidth="70" Width="Auto" Command="{Binding saveLogPathCommand}" Foreground="White" Background="#FFF89344" FontFamily="Segoe UI Semibold"/>
+
+        </Grid>
+        <Grid Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Top" Grid.RowSpan="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="200" />
+                <ColumnDefinition Width="400" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20" FontFamily="Segoe UI Semibold" Foreground="#FF575959"><Run Language="fr-fr" Text="priori file"/></TextBlock>
+            <TextBox Grid.Column ="1" Text="{Binding name}" x:Name="name" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0" Width="300" FontSize="24" TextAlignment="Center" Height="Auto"/>
+            <Button Grid.Column="2" Content="{DynamicResource save}" HorizontalAlignment="Center" VerticalAlignment="Center" MinWidth="70" Width="Auto" Command="{Binding savenameCommand}" Foreground="White" Background="#FFF89344" FontFamily="Segoe UI Semibold" Click="Button_Click"/>
+
+        </Grid>
+        <Grid Grid.Row="4" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,19,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="200" />
+                <ColumnDefinition Width="400" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20" FontFamily="Segoe UI Semibold" Foreground="#FF575959"><Run Language="fr-fr" Text="SizeThresold"/></TextBlock>
+            <TextBox Grid.Column ="1" Text="{Binding size}" x:Name="size" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0" Width="300" FontSize="24" TextAlignment="Center" Height="Auto"/>
+            <Button Grid.Column="2" Content="{DynamicResource save}" HorizontalAlignment="Center" VerticalAlignment="Center" MinWidth="70" Width="Auto" Command="{Binding savesizeCommand}" Foreground="White" Background="#FFF89344" FontFamily="Segoe UI Semibold"/>
+
+        </Grid>
+    </Grid>
+</Page>

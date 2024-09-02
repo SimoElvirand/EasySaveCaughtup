@@ -1,0 +1,32 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:system="clr-namespace:System;assembly=mscorlib">
+    <system:String x:Key="create">Crear</system:String>
+    <system:String x:Key="edit">Editar la copia de seguridad</system:String>
+    <system:String x:Key="delete">Eliminar la copia de seguridad</system:String>
+    <system:String x:Key="run_selected">Ejecutar la selección</system:String>
+    <system:String x:Key="backup_name">Nombre de la copia de seguridad</system:String>
+    <system:String x:Key="backup_source">Ruta de origen</system:String>
+    <system:String x:Key="backup_destination">Ruta de destino</system:String>
+    <system:String x:Key="backup_log_type">Archivo de registro</system:String>
+    <system:String x:Key="backup_type">Tipo de copia de seguridad</system:String>
+    <system:String x:Key="language">Elija el idioma</system:String>
+    <system:String x:Key="create_backup_job">Crear un trabajo de copia de seguridad</system:String>
+    <system:String x:Key="differential">Diferencial</system:String>
+    <system:String x:Key="full">Completo</system:String>
+    <system:String x:Key="browse">Buscar</system:String>
+    <system:String x:Key="log">Registro</system:String>
+    <system:String x:Key="type">Tipo</system:String>
+    <system:String x:Key="backup_job_well_create">El trabajo de copia de seguridad se creó correctamente</system:String>
+    <system:String x:Key="backup_job_well_edit">El trabajo de copia de seguridad se editó correctamente</system:String>
+    <system:String x:Key="backup_job_well_run">El trabajo de copia de seguridad se ejecutó correctamente</system:String>
+    <system:String x:Key="all_backup_job_well_run">Todos los trabajos de copia de seguridad se ejecutaron correctamente</system:String>
+    <system:String x:Key="missing_fields">Uno o más campos faltan</system:String>
+    <system:String x:Key="error">Error</system:String>
+    <system:String x:Key="path_not_found">Ruta no encontrada</system:String>
+    <system:String x:Key="all_backup_jobs_running">Todos los trabajos de copia de seguridad están en ejecución</system:String>
+    <system:String x:Key="backup_job_running">Un trabajo de copia de seguridad está en ejecución</system:String>
+    <system:String x:Key="select_all">Seleccionar todo</system:String>
+
+
+</ResourceDictionary>

@@ -1,0 +1,36 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:system="clr-namespace:System;assembly=mscorlib">
+    <system:String x:Key="create">Create</system:String>
+    <system:String x:Key="edit">Edit Backup</system:String>
+    <system:String x:Key="delete">Delete Backup</system:String>
+    <system:String x:Key="run_selected">Run Selected</system:String>
+    <system:String x:Key="backup_name">Backup Name</system:String>
+    <system:String x:Key="backup_source">Source Path</system:String>
+    <system:String x:Key="backup_destination">Destination Path</system:String>
+    <system:String x:Key="backup_log_type">Log File</system:String>
+    <system:String x:Key="backup_type">Backup Type</system:String>
+    <system:String x:Key="language">Choose the Language</system:String>
+    <system:String x:Key="create_backup_job">Create a Backup Job</system:String>
+    <system:String x:Key="differential">Differential</system:String>
+    <system:String x:Key="full">Full</system:String>
+    <system:String x:Key="browse">Browse</system:String>
+    <system:String x:Key="log">Log</system:String>
+    <system:String x:Key="type">Type</system:String>
+    <system:String x:Key="backup_job_well_create">Backup job created successfully</system:String>
+    <system:String x:Key="backup_job_well_edit">Backup job edited successfully</system:String>
+    <system:String x:Key="backup_job_well_run">Backup job run successfully</system:String>
+    <system:String x:Key="all_backup_job_well_run">All backup jobs run successfully</system:String>
+    <system:String x:Key="missing_fields">One or more fields are missing</system:String>
+    <system:String x:Key="error">Error</system:String>
+    <system:String x:Key="path_not_found_en">Path not found</system:String>
+    <system:String x:Key="all_backup_jobs_running_en">All backup jobs are running</system:String>
+    <system:String x:Key="backup_job_running_en">A backup job is running</system:String>
+    <system:String x:Key="select_all">Select All</system:String>
+    <system:String x:Key="ecnryption_extension">Encryption Extentions</system:String>
+    <system:String x:Key="log_path">Log files path</system:String>
+    <system:String x:Key="save">Save</system:String>
+    <system:String x:Key="lastRuned">Last Time Run</system:String>
+
+
+</ResourceDictionary>

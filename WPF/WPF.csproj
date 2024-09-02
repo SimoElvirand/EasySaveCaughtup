@@ -1,0 +1,48 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+	  <UseWindowsForms>true</UseWindowsForms>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UseWPF>true</UseWPF>
+	
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="view\assets\add.png" />
+    <None Remove="view\assets\cogwheel.png" />
+    <None Remove="view\assets\delete.png" />
+    <None Remove="view\assets\edit.png" />
+    <None Remove="view\assets\log.png" />
+    <None Remove="view\assets\logopng.png" />
+    <None Remove="view\Desktop_Wallpaper_BackUP-4K.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="view\assets\add.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="view\assets\cogwheel.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="view\assets\delete.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="view\assets\edit.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="view\assets\log.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="view\assets\logopng.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="view\Desktop_Wallpaper_BackUP-4K.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.3.0" />
+    <PackageReference Include="Emoji.Wpf" Version="0.3.4" />
+  </ItemGroup>
+
+</Project>
