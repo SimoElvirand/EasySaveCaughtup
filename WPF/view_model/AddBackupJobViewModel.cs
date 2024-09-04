@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Printing.IndexedProperties;
 using System.Text;
 using System.Windows.Input;
+using System.Xml.Linq;
 using WPF.commands;
 using WPF.model;
 
@@ -11,6 +12,7 @@ namespace WPF.view_model
 {
     class AddBackupJobViewModel
     {
+
         public string Name { get; set; }
         public string SourceDirectoryy { get; set; }
         public string DestinationDirectory { get; set; }
@@ -20,17 +22,11 @@ namespace WPF.view_model
         public bool IsFullBackup { get; set; }
         public bool IsXmlLogType { get; set; }
         public bool IsJsonLogType { get; set; }
-
         public ICommand AddBackupCommand { get; set; }
 
         public AddBackupJobViewModel()
         {
             AddBackupCommand = new RelayCommand(AddBackup, CanAddBackup);
-        }
-
-        private bool CanAddBackup(object obj)
-        {
-            return true; 
         }
 
         private void AddBackup(object obj)
@@ -46,15 +42,15 @@ namespace WPF.view_model
                 {
                     BackupType = "Full";
                 };
-                if(IsXmlLogType && IsJsonLogType)
+                if (IsXmlLogType && IsJsonLogType)
                 {
                     LogChoice = 3;
                 }
-                else if(IsXmlLogType)
+                else if (IsXmlLogType)
                 {
                     LogChoice = 1;
                 }
-                else if(IsJsonLogType)
+                else if (IsJsonLogType)
                 {
                     LogChoice = 2;
                 }
@@ -63,14 +59,18 @@ namespace WPF.view_model
                 Debug.WriteLine("==============================");
                 Debug.WriteLine(Name);
                 BackupJobModel backupToBeAdded = new BackupJobModel(SourceDirectoryy, DestinationDirectory, Name, BackupType, LogChoice);
-                
-                BackupListManager.AddBackupJob(backupToBeAdded);
-                Debug.WriteLine(BackupListManager.DatabaseBackupJobs.Count);
+                BackupJobModel.DatabaseBackupJobs.Add(backupToBeAdded);
+                Debug.WriteLine(BackupJobModel.DatabaseBackupJobs.Count);
             }
             catch (Exception e)
             {
                 Debug.WriteLine("Error: " + e.Message);
             }
         }
-    }
+        private bool CanAddBackup(object obj)
+        {
+            return true;
+        }
+
+    }  
 }

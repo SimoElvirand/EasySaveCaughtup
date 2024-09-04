@@ -26,7 +26,7 @@ namespace WPF.view
         public CreateBackupView()
         {
             InitializeComponent();
-            AddBackupJobViewModel addBackupJobViewModel = new AddBackupJobViewModel();
+            BackupJobViewModel addBackupJobViewModel = new BackupJobViewModel();
             this.DataContext = addBackupJobViewModel;
             LanguageManager.Instance.LanguageChanged += LanguageChangedHandler;
             UpdateUI();
@@ -51,7 +51,7 @@ namespace WPF.view
                 if (result == System.Windows.Forms.DialogResult.OK)
                 {
                     // Update the SourceDirectory property in the ViewModel
-                    AddBackupJobViewModel addBackupJobViewModel = (AddBackupJobViewModel)this.DataContext;
+                    BackupJobViewModel addBackupJobViewModel = (BackupJobViewModel)this.DataContext;
                     addBackupJobViewModel.SourceDirectoryy = folderBrowserDialog.SelectedPath;
                     sourcePath.Text = folderBrowserDialog.SelectedPath;
                 }
@@ -67,7 +67,7 @@ namespace WPF.view
                 if (result == System.Windows.Forms.DialogResult.OK)
                 {
                     // Update the DestinationDirectory property in the ViewModel
-                    AddBackupJobViewModel addBackupJobViewModel = (AddBackupJobViewModel)this.DataContext;
+                    BackupJobViewModel addBackupJobViewModel = (BackupJobViewModel)this.DataContext;
                     addBackupJobViewModel.DestinationDirectory = folderBrowserDialog.SelectedPath;
                     targetPath.Text = folderBrowserDialog.SelectedPath;
                 }

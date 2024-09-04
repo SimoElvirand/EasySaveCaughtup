@@ -21,8 +21,9 @@ using WPF.commands;
 
 namespace WPF.model
 {
-    class BackupListManager
+    class BackupListManager : INotifyPropertyChanged
     {
+        public event PropertyChangedEventHandler? PropertyChanged;
         private static string _path = "C://Log";
         private static string _extensionsToEncrypt = "";
         private static Mutex mutuale = new Mutex(false);
@@ -97,13 +98,7 @@ namespace WPF.model
             }
         }
         
-        public static ObservableCollection<BackupJobModel> DatabaseBackupJobs = new ObservableCollection<BackupJobModel>();
-
-        public static ObservableCollection<BackupJobModel> GetBackupJobModels()
-        {
-            return DatabaseBackupJobs;
-
-        }
+       
         //private static  int threadIndexCounter = 0;
         // public static void RunBackupp()
         //{
@@ -196,16 +191,16 @@ namespace WPF.model
             
         }
 
-        public static void AddBackupJob(BackupJobModel backupJobModel)
-        {
-            DatabaseBackupJobs.Add(backupJobModel);
-        }
-        public static void DeleteBackupJob(BackupJobModel backupJobModel)
-        {
-            var backupJobsCopy = new List<BackupJobModel>(DatabaseBackupJobs);
+        /// <summary>
+        /// /////////////////////////
+        /// </summary>
+        /// <param name="backupJobModel"></param>
+        //public static void DeleteBackupJob(BackupJobModel backupJobModel)
+       // {
+       //     ///var backupJobsCopy = new List<BackupJobModel>(DatabaseBackupJobs);
 
-            DatabaseBackupJobs.Remove(backupJobModel);
-        }
+           // DatabaseBackupJobs.Remove(backupJobModel);
+        //}
         public static void RunBackupJob(BackupJobModel backupJobModel, int c)
         {
             
@@ -543,7 +538,8 @@ namespace WPF.model
             }
             //mutuale.ReleaseMutex();
         }
-
+        public void OnPropertyChanged(string property) =>
+                  PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(property));
 
 
     }

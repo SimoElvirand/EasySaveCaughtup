@@ -4,6 +4,8 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:WPF.view"
+      xmlns:vm="clr-namespace:WPF.model"
+
       mc:Ignorable="d" 
       d:DesignHeight="550" d:DesignWidth="800"
       Title="EditBackupView">
@@ -93,10 +95,10 @@
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                <Button Command="{Binding RunBackupCommand}" Grid.Row="0" Content="{DynamicResource run_selected}"  Width="100" Background="#FFF89344" Foreground="#FFF4F4F4" FontFamily="Segoe UI Semibold" Click="Button_Click" Margin="75,0,75,7" Height="30" VerticalAlignment="Bottom"/>
+                <Button Command="{Binding RunBackupCommand}" Grid.Row="0" Content="{DynamicResource run_selected}"  Width="100" Background="#FFF89344" Foreground="#FFF4F4F4" FontFamily="Segoe UI Semibold"  Margin="75,0,75,7" Height="30" VerticalAlignment="Bottom"/>
                 <Button Command="{Binding DeleteBackupCommand}" Grid.Row="1" Content="{DynamicResource delete}" Width="100" Height="30" VerticalAlignment="Center" Background="#FFF89344" Foreground="#FFF4F4F4" FontFamily="Segoe UI Semibold"/>
-                <Button  Content="Pause" Command="{Binding PauseBackupCommand}" Click="PauseButton_Click" Grid.Row="2"   Width="100" Margin="75,7,75,7" Background="#FFF89344" Foreground="#FFF4F4F4" FontFamily="Segoe UI Semibold"/>
-                <Button Content="Stop" Command="{Binding StopBackupCommand}" Click="StopButton_Click" Grid.Row="3"  Width="100" Background="#FFF89344" Foreground="#FFF4F4F4" FontFamily="Segoe UI Semibold" Margin="75,7,75,7"/>
+                <Button  Content="Pause" Command="{Binding PauseBackupCommand}"   CommandParameter="{Binding}" Grid.Row="2"   Width="100" Margin="75,7,75,7" Background="#FFF89344" Foreground="#FFF4F4F4" FontFamily="Segoe UI Semibold"/>
+                <Button Content="Stop" Command="{Binding StopBackupCommand}"   CommandParameter="{Binding}" Grid.Row="3"  Width="100" Background="#FFF89344" Foreground="#FFF4F4F4" FontFamily="Segoe UI Semibold" Margin="75,7,75,7"/>
                 <Button IsEnabled="false" Grid.Row="4" Content="clickme"  Width="100" Height="30" VerticalAlignment="Center" Background="#FFF89344" Foreground="#FFF4F4F4" FontFamily="Segoe UI Semibold"></Button>
 
             </Grid>
@@ -118,17 +120,26 @@
             <!-- <Label Content="Pourcentage :" HorizontalAlignment="Left" Margin="405,252,0,0" VerticalAlignment="Top" RenderTransformOrigin="3.024,1.668" FontSize="18" FontFamily="Arial Rounded MT Bold" FontWeight="Bold" Grid.Row="1" Height="41" Width="217"/>-->
             <!--- <Label x:Name="lb_etat_prog_server" Content="" HorizontalAlignment="Left" Margin="627,252,0,0" VerticalAlignment="Top" Height="58" Width="108" FontSize="24" Grid.Row="1"/>-->
             <!---<TextBlock Text="{Binding Progreess, StringFormat={}{0:0}%}"  HorizontalAlignment="Left" Margin="627,252,0,0" VerticalAlignment="Top" Height="58" Width="108" FontSize="24" Grid.Row="1"/>-->
-            <ListBox ItemsSource="{Binding BackupJobList}" Margin="5,-21,5,5">
-    <ListBox.ItemTemplate>
-        <DataTemplate>
+    <ListBox ItemsSource="{Binding BackupJobListprog}" Margin="5,-21,5,5">
+      <ListBox.ItemTemplate >
+                    <DataTemplate  DataType="{x:Type vm:BackupJobModel}">
             <StackPanel>
-                <ProgressBar Minimum="0" Maximum="100" HorizontalAlignment="Left" VerticalAlignment="Top" Width="379" Value="{Binding Progress1}" Height="20" Margin="5"/>
-                <StackPanel Orientation="Horizontal">
-                    <Button Content="Pause" Command="{Binding PauseCommand}" CommandParameter="{Binding}" Margin="5" />
-                    <Button Content="Stop" Command="{Binding StopCommand}" CommandParameter="{Binding}" Margin="5" />
+                            <TextBlock Text="{Binding name}"/>
+                            <ProgressBar Minimum="0" Maximum="100"  Width="379" Value="{Binding Progress1}" Height="20" Margin="5"/>
+                            <TextBlock Text="{Binding Progreess1, StringFormat={}{0:0}%}"/>
+                            <!-- <StackPanel Orientation="Horizontal">-->
+
+                            <!-- <TextBlock Text="{Binding FileBackedUp}"/>-->
+                            <!--//<TextBlock Text="/"/>-->
+                            <!--<TextBlock Text="{Binding TotalBackupJobs}"/>-->
+                             <!--</StackPanel>-->
+                            <StackPanel Orientation="Horizontal">
+                                <Button Content="Pause" Command="{Binding PauseBackupCommand}"  Margin="5" />
+                                <Button Content="Resume" Command="{Binding ResumeBackupCommand}"  Margin="5" />
+                                <Button Content="Stop" Command="{Binding StopBackupCommand}"  Margin="5" />
                 </StackPanel>
             </StackPanel>
-        </DataTemplate>
+        </DataTemplate> 
     </ListBox.ItemTemplate>
 </ListBox>
 

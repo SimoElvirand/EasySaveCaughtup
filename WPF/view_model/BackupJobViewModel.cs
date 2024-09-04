@@ -16,17 +16,23 @@ using WPF.model;
 using System.Threading.Tasks;
 using System.Dynamic;
 using System.Reflection;
+using System.Xml.Linq;
+using CommunityToolkit.Mvvm.Input;
+using System.Windows;
 
 namespace WPF.view_model
 {
     class BackupJobViewModel : ViewModelBase
     {
+        public event PropertyChangedEventHandler? PropertyChanged;
+
         private ObservableCollection<BackupJobModel> backupJobList;
         private ObservableCollection<BackupJobModel> backupJobListprog;
         private ObservableCollection<BackupJobModel> selectedBackupJobs; // Change here
         private List<ThreadControl> threadControls = new List<ThreadControl>();
         private List<BackupListManager> Backuplist = new List<BackupListManager>();
         
+
         private int threadIndexCounter = 0;
         private static ManualResetEvent pauseEvent = new ManualResetEvent(true);
 
@@ -38,8 +44,8 @@ namespace WPF.view_model
         //public ICommand RunBackupCommand { get; set; }
 
         public ICommand RunBackupCommand { get; set; }
-        public ICommand PauseBackupCommand { get; set; }
-        public ICommand StopBackupCommand { get; set; }
+        //public ICommand PauseBackupCommand { get; set; }
+        //public ICommand StopBackupCommand { get; set; }
 
 
         public static BackupJobViewModel Instance { get; private set; }
@@ -100,25 +106,36 @@ namespace WPF.view_model
 
         public BackupJobViewModel()
         {
-           Instance = this;
+           //Instance = this;
             //backupJobList = BackupListManager.GetBackupJobModels();
             //selectedBackupJobs = new ObservableCollection<BackupJobModel>(); // Change here
             //DeleteBackupCommand = new RelayCommand(DeleteBackup, CanDeleteBackup);
             //ModifyBackupCommand = new RelayCommand(ModifyBackup, CanModifyBackup);
             //RunBackupCommand = new RelayCommand(RunBackup, CanRunBackup);
-            BackupJobListprog = BackupListManager.GetBackupJobModels();
-            BackupJobList = BackupListManager.GetBackupJobModels();
+            //AddBackupCommand = new RelayCommand(AddBackup, CanAddBackup);
+            AddBackupCommand = new commands.RelayCommand(AddBackup, CanAddBackup);
+            BackupJobListprog = BackupJobModel.GetBackupJobModels();
+            BackupJobList = BackupJobModel.GetBackupJobModels();
             SelectedBackupJobs = new ObservableCollection<BackupJobModel>();
-            RunBackupCommand = new RelayCommand(RunBackup, CanRunBackup);
-            PauseBackupCommand = new RelayCommand(PauseBackup, CanPauseBackup);
-            StopBackupCommand = new RelayCommand(StopBackup, CanStopBackup);
+            RunBackupCommand = new commands.RelayCommand(RunBackup, CanRunBackup);
+            //PauseBackupCommand = new commands.RelayCommand(PauseBackup, CanPauseBackup);
+            //StopBackupCommand = new RelayCommand<BackupJobModel>(StopBackup, CanStopBackup);
 
         }
 
-         private void RunBackup(object obj)
+
+        //private async void RunBackup(object obj)
+        //{
+            //foreach (var selectedBackupJob in SelectedBackupJobs.ToList())
+            //{
+                //selectedBackupJob.CancellationTokenSource = new CancellationTokenSource();
+                //await Task.Run(() => selectedBackupJob.RunBackupJob(selectedBackupJob, selectedBackupJob.CancellationTokenSource.Token));
+           // }
+        //}
+        private void RunBackup(object obj)
         {
 
-         List<Thread> threads = new List<Thread>();
+         //List<Thread> threads = new List<Thread>();
 
             //Parallel.ForEach(SelectedBackupJobs.ToList(), selectedBackupJob =>
             //{
@@ -149,22 +166,24 @@ namespace WPF.view_model
 
             foreach (var selectedBackupJob in SelectedBackupJobs.ToList())
             {
-                var backupJobModel = new BackupJobModel(selectedBackupJob.sourceDirectory, selectedBackupJob.destinationDirectory, selectedBackupJob.name, selectedBackupJob.backupType, selectedBackupJob.logChoice)
-                {
-                    Progress1 = 0,
-                    PauseCommand = PauseBackupCommand,
-                    StopCommand = StopBackupCommand
-                };
+               // Thread newThread = new Thread(() =>
+                //{
+                    selectedBackupJob.TotalBackupJobs = SelectedBackupJobs.Count;
+                    selectedBackupJob.RunBackupJob(selectedBackupJob);
+                //});
+                //newThread.Start();
+               // var backupJobModel = new BackupJobModel(selectedBackupJob.sourceDirectory, selectedBackupJob.destinationDirectory, selectedBackupJob.name, selectedBackupJob.backupType, selectedBackupJob.logChoice);
 
-                BackupJobListprog.Add(backupJobModel);
+
+                //BackupJobListprog.Add(backupJobModel);
 
                 // Start the backup job in a new thread
-                backupJobModel.Thread = new Thread(() =>
-                {
-                    var backupListManager = new BackupListManager(selectedBackupJob, SelectedBackupJobs.Count, backupJobModel);
-                    backupListManager.DoWork();
-                });
-                backupJobModel.Thread.Start();
+                //backupJobModel.Thread = new Thread(() =>
+                //{
+                //    var backupListManager = new BackupListManager(selectedBackupJob, SelectedBackupJobs.Count, backupJobModel);
+               ///     backupListManager.DoWork();
+               ///// });
+                //backupJobModel.Thread.Start();
             }
         }
 
@@ -175,24 +194,36 @@ namespace WPF.view_model
 
         private bool CanPauseBackup(BackupJobModel backupJobModel)
         {
-            return backupJobModel?.Thread != null && backupJobModel.Thread.ThreadState == System.Threading.ThreadState.Running;
+            return true;
         }
 
         private void PauseBackup(object obj)
         {
             // backupJobModel?.Thread?.Suspend();
-            pauseEvent.Reset();
+            //backupJobModel?.PauseBackup();
+            if (obj is BackupJobModel backupJobModel)
+            {
+                //backupJobModel.PauseBackup();
+                Debug.WriteLine("obj");
+            }
+            Debug.WriteLine("pauseviewmodeldddddddddddd");
         }
 
         private bool CanStopBackup(BackupJobModel backupJobModel)
         {
-            return backupJobModel?.Thread != null && backupJobModel.Thread.ThreadState != System.Threading.ThreadState.Stopped;
+            return true;
         }
 
-        private void StopBackup(object obj)
+        private void StopBackup(BackupJobModel backupJobModel)
         {
             //backupJobModel?.Thread?.Abort();
-            pauseEvent.Set();
+            //backupJobModel?.StopBackup();
+            
+            
+                //backupJobModel.StopBackup();
+                Debug.WriteLine("objstop");
+           
+            Debug.WriteLine("stopviewmodeldddddddddddd");
         }
 
         //Thread[] threads = new Thread[5];
@@ -341,7 +372,7 @@ namespace WPF.view_model
                 Debug.WriteLine(SelectedBackupJobs.Count);
                 foreach (var selectedBackupJob in SelectedBackupJobs.ToList()) // Use ToList() to create a copy
                 {
-                    BackupListManager.DeleteBackupJob(selectedBackupJob);
+                    //BackupListManager.DeleteBackupJob(selectedBackupJob);
                 }
             }
             catch (Exception e)
@@ -349,6 +380,72 @@ namespace WPF.view_model
                 Debug.WriteLine("Couldn't delete");
             }
         }
+
+        public ICommand AddBackupCommand { get; set; }
+        
+        private bool CanAddBackup(object obj)
+        {
+            return true;
+        }
+
+        /////////////addddddddddbaaaaaaaaackup
+        ///
+
+        public string Name { get; set; }
+        public string SourceDirectoryy { get; set; }
+        public string DestinationDirectory { get; set; }
+        public string BackupType { get; set; }
+        public int LogChoice { get; set; }
+        public bool IsDifferentialBackup { get; set; }
+        public bool IsFullBackup { get; set; }
+        public bool IsXmlLogType { get; set; }
+        public bool IsJsonLogType { get; set; }
+        //public ICommand AddBackupCommand { get; set; }
+
+
+        private void AddBackup(object obj)
+        {
+            Debug.WriteLine("Trying to add");
+            try
+            {
+                if (IsDifferentialBackup)
+                {
+                    BackupType = "Diff";
+                }
+                else if (IsFullBackup)
+                {
+                    BackupType = "Full";
+                };
+                if (IsXmlLogType && IsJsonLogType)
+                {
+                    LogChoice = 3;
+                }
+                else if (IsXmlLogType)
+                {
+                    LogChoice = 1;
+                }
+                else if (IsJsonLogType)
+                {
+                    LogChoice = 2;
+                }
+
+                Debug.WriteLine(SourceDirectoryy);
+                Debug.WriteLine("==============================");
+                Debug.WriteLine(Name);
+                BackupJobModel backupToBeAdded = new BackupJobModel(SourceDirectoryy, DestinationDirectory, Name, BackupType, LogChoice);
+                BackupJobModel.DatabaseBackupJobs.Add(backupToBeAdded);
+                Debug.WriteLine(BackupJobModel.DatabaseBackupJobs.Count);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Error: " + e.Message);
+            }
+        }
+       // private bool CanAddBackup(object obj)
+        //{
+          //  return true;
+        //}
+
 
     }
 }

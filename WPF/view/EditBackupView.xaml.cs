@@ -12,6 +12,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using WPF.view_model;
 using WPF.view;
+using WPF.model;
 using System.Diagnostics;
 using System.ComponentModel;
 using System.Threading;
@@ -47,39 +48,23 @@ namespace WPF.view
             InitializeProcessCheckTimer();
             // Create an instance of the view model
             BackupJobViewModel viewModel = new BackupJobViewModel();
-
+            //BackupJobModel p = new BackupJobModel();
             // Set the view model as the DataContext for the view
             this.DataContext = viewModel;
+          //DataContext = p;
         }
 
 
         private void InitializeProcessCheckTimer()
         {
             processCheckTimer = new System.Timers.Timer(5000); // Vérifie toutes les 5 secondes
-            processCheckTimer.Elapsed += CheckProcesses;
+            
             processCheckTimer.AutoReset = true;
             processCheckTimer.Enabled = true;
         }
 
 
-        private void CheckProcesses(object sender, ElapsedEventArgs e)
-        {
-            var runningProcesses = Process.GetProcesses();
-            foreach (var process in runningProcesses)
-            {
-                if (allowedProcesses.Contains(process.ProcessName, StringComparer.OrdinalIgnoreCase))
-                {
-                    isPaused = false;
-                    c = 0;
-                    IsStop = true;
-                    // Signalez ici l'application non autorisée
-                    System.Windows.MessageBox.Show($"Application non autorisée détectée : {process.ProcessName}", "Alerte", (MessageBoxButton)MessageBoxButtons.OK, (MessageBoxImage)MessageBoxIcon.Warning);
-                    processCheckTimer.Stop();  // Arrête le timer
-                    processCheckTimer.Dispose();  // Libère les ressources utilisées par le timer
-                    //base.OnFormClosed(e);
-                }
-            }
-        }
+       
         /*    protected override void OnFormClosed(FormClosedEventArgs e)
         {
             processCheckTimer.Stop();  // Arrête le timer
@@ -116,40 +101,7 @@ namespace WPF.view
 
 
         // Méthode qui initialise la barre de progression 
-        void worker_DoWork(object sender, DoWorkEventArgs e)
-        {
-            double estimated;
-            estimated = estimateTime();
-            double remainingtime = estimated;
-
-            for (int i = 1; i <= 100; i++)
-            {
-               
-                
-
-                while (estimated > 0) 
-                {
-                    while (isPaused)
-                    {
-                        pauseEvent.Set(); // Pause for 100 milliseconds
-                        continue;
-                    }
-                    if (IsStop)
-                    {
-                        cancellationTokenSource.Dispose();
-                        estimated = 0;
-                        break;
-                    }
-                    double time = 100 * (1 - remainingtime / estimated);
-                    (sender as BackgroundWorker).ReportProgress((int)time);
-
-                    Thread.Sleep(5000);
-                    remainingtime -= 200;
-                }
-                
-
-            }
-        }
+        
 
         void worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
@@ -169,7 +121,7 @@ namespace WPF.view
            
             BackgroundWorker worker = new BackgroundWorker();
             worker.WorkerReportsProgress = true;
-            worker.DoWork += worker_DoWork;
+            
             worker.ProgressChanged += worker_ProgressChanged;
             worker.RunWorkerAsync();
             
