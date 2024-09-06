@@ -447,9 +447,10 @@ namespace WPF.model
 
                 foreach (var v in queryList1Only)
                 {
-                   
-                     pauseEvent.Wait(cancellationToken);  // Attendre ici si la pause est activée.
                     cancellationToken.ThrowIfCancellationRequested();
+
+                    pauseEvent.Wait(cancellationToken);  // Attendre ici si la pause est activée.
+                    
 
                     Stopwatch stopwatch = new Stopwatch();
                     Console.Write("diff copy done for file : " + v.Name);

@@ -237,8 +237,9 @@ namespace WPF.view_model
 
         private void PauseBackup(BackupJobModel backupJob)
         {
-            backupJob.PauseBackup();
             Debug.WriteLine("viewmodel" + backupJob.ToString());
+            backupJob.PauseBackup();
+            
         }
 
         private void StopBackup(BackupJobModel backupJob)
