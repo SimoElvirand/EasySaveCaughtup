@@ -19,6 +19,7 @@ using System.Reflection;
 using System.Xml.Linq;
 using CommunityToolkit.Mvvm.Input;
 using System.Windows;
+using WPF.Network;
 
 namespace WPF.view_model
 {
@@ -26,8 +27,8 @@ namespace WPF.view_model
     {
         public event PropertyChangedEventHandler? PropertyChanged;
 
-        private ObservableCollection<BackupJobModel> backupJobList;
-        private ObservableCollection<BackupJobModel> backupJobListprog;
+        private  ObservableCollection<BackupJobModel> backupJobList;
+        private  ObservableCollection<BackupJobModel> backupJobListprog;
         private ObservableCollection<BackupJobModel> selectedBackupJobs; // Change here
         private List<ThreadControl> threadControls = new List<ThreadControl>();
         private List<BackupListManager> Backuplist = new List<BackupListManager>();
@@ -40,7 +41,14 @@ namespace WPF.view_model
         public ICommand ModifyBackupCommand { get; set; }
         public ICommand DeleteBackupCommand { get; set; }
 
-       
+        public ICommand PauseBackupCommand { get; set; }
+        public ICommand StopBackupCommand { get; set; }
+
+        public ICommand ResumeBackupCommand { get; set; }
+        private TcpServer _tcpServer;
+
+
+
         //public ICommand RunBackupCommand { get; set; }
 
         public ICommand RunBackupCommand { get; set; }
@@ -119,19 +127,32 @@ namespace WPF.view_model
             SelectedBackupJobs = new ObservableCollection<BackupJobModel>();
             RunBackupCommand = new commands.RelayCommand(RunBackup, CanRunBackup);
             //PauseBackupCommand = new commands.RelayCommand(PauseBackup, CanPauseBackup);
+            //StopBackupCommand = new commands.RelayCommand(StopBackup, CanStopBackup);
+            ///ResumeBackupCommand = new commands.RelayCommand(ResumeBackup, CanResumeBackup);
+            //PauseBackupCommand = new commands.RelayCommand(PauseBackup, CanPauseBackup);
             //StopBackupCommand = new RelayCommand<BackupJobModel>(StopBackup, CanStopBackup);
+            PauseBackupCommand = new commands.RelayCommand<BackupJobModel>(PauseBackup);
+            StopBackupCommand = new commands.RelayCommand<BackupJobModel>(StopBackup);
+            ResumeBackupCommand = new commands.RelayCommand<BackupJobModel>(ResumeBackup);
+            //_tcpServer = new TcpServer(12345); // Choose an appropriate port number
+            //_tcpServer.Start();
+
+
+
 
         }
 
 
         //private async void RunBackup(object obj)
         //{
-            //foreach (var selectedBackupJob in SelectedBackupJobs.ToList())
-            //{
-                //selectedBackupJob.CancellationTokenSource = new CancellationTokenSource();
-                //await Task.Run(() => selectedBackupJob.RunBackupJob(selectedBackupJob, selectedBackupJob.CancellationTokenSource.Token));
-           // }
+        //foreach (var selectedBackupJob in SelectedBackupJobs.ToList())
+        //{
+        //selectedBackupJob.CancellationTokenSource = new CancellationTokenSource();
+        //await Task.Run(() => selectedBackupJob.RunBackupJob(selectedBackupJob, selectedBackupJob.CancellationTokenSource.Token));
+        // }
         //}
+
+        
         private void RunBackup(object obj)
         {
 
@@ -166,12 +187,12 @@ namespace WPF.view_model
 
             foreach (var selectedBackupJob in SelectedBackupJobs.ToList())
             {
-               // Thread newThread = new Thread(() =>
-                //{
+                Thread newThread = new Thread(() =>
+                {
                     selectedBackupJob.TotalBackupJobs = SelectedBackupJobs.Count;
                     selectedBackupJob.RunBackupJob(selectedBackupJob);
-                //});
-                //newThread.Start();
+                });
+                newThread.Start();
                // var backupJobModel = new BackupJobModel(selectedBackupJob.sourceDirectory, selectedBackupJob.destinationDirectory, selectedBackupJob.name, selectedBackupJob.backupType, selectedBackupJob.logChoice);
 
 
@@ -192,39 +213,70 @@ namespace WPF.view_model
             return true;
         }
 
-        private bool CanPauseBackup(BackupJobModel backupJobModel)
-        {
-            return true;
-        }
+        //private bool CanPauseBackup(BackupJobModel backupJobModel)
+        //{
+            //return true;
+       // }
 
-        private void PauseBackup(object obj)
-        {
+        //private void PauseBackup(object obj)
+       // {
             // backupJobModel?.Thread?.Suspend();
             //backupJobModel?.PauseBackup();
-            if (obj is BackupJobModel backupJobModel)
-            {
-                //backupJobModel.PauseBackup();
-                Debug.WriteLine("obj");
-            }
-            Debug.WriteLine("pauseviewmodeldddddddddddd");
+            //var current = BackupJobListprog.FirstOrDefault();
+            //if (current != null)
+            //{
+               // current.PauseBackup();
+           // }
+            //Debug.WriteLine("pauseviewmodeldddddddddddd");
+        //}
+
+        //private bool CanStopBackup(object obj)
+       // {
+           // return true;
+        //}
+
+        private void PauseBackup(BackupJobModel backupJob)
+        {
+            backupJob.PauseBackup();
+            Debug.WriteLine("viewmodel" + backupJob.ToString());
         }
 
-        private bool CanStopBackup(BackupJobModel backupJobModel)
+        private void StopBackup(BackupJobModel backupJob)
         {
-            return true;
+            backupJob.StopBackup();
         }
 
-        private void StopBackup(BackupJobModel backupJobModel)
+        private void ResumeBackup(BackupJobModel backupJob)
         {
-            //backupJobModel?.Thread?.Abort();
-            //backupJobModel?.StopBackup();
-            
-            
-                //backupJobModel.StopBackup();
-                Debug.WriteLine("objstop");
-           
-            Debug.WriteLine("stopviewmodeldddddddddddd");
+            backupJob.ResumeBackup();
         }
+
+
+
+        //private void ResumeBackup(object obj)
+        //{
+        // var current = BackupJobListprog.FirstOrDefault();
+        //if (current != null)
+        //{
+        // current.ResumeBackup();
+        //}
+        // }
+        // private void StopBackup(object obj)
+        //{
+        //backupJobModel?.Thread?.Abort();
+        //backupJobModel?.StopBackup();
+        // var current = BackupJobListprog.FirstOrDefault();
+        // Debug.WriteLine($"Stop backup: {current}");
+        //if (current != null)
+        // {
+        //current.StopBackup();
+        ///}
+
+        //backupJobModel.StopBackup();
+        // Debug.WriteLine("objstop");
+
+        // Debug.WriteLine("stopviewmodeldddddddddddd");
+        //}
 
         //Thread[] threads = new Thread[5];
         //static Dictionary<int, ManualResetEventSlim> threadControlEvents = new Dictionary<int, ManualResetEventSlim>();
@@ -361,7 +413,7 @@ namespace WPF.view_model
             return true; // Change here
         }
 
-        private bool CanStopBackup(object obj)
+        private bool CanResumeBackup(object obj)
         {
             return true; // Change here
         }
@@ -435,6 +487,7 @@ namespace WPF.view_model
                 BackupJobModel backupToBeAdded = new BackupJobModel(SourceDirectoryy, DestinationDirectory, Name, BackupType, LogChoice);
                 BackupJobModel.DatabaseBackupJobs.Add(backupToBeAdded);
                 Debug.WriteLine(BackupJobModel.DatabaseBackupJobs.Count);
+                //BackupJobModel.RunBackup()
             }
             catch (Exception e)
             {

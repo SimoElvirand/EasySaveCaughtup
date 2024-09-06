@@ -59,8 +59,8 @@ namespace WPF.view_model
                 Debug.WriteLine("==============================");
                 Debug.WriteLine(Name);
                 BackupJobModel backupToBeAdded = new BackupJobModel(SourceDirectoryy, DestinationDirectory, Name, BackupType, LogChoice);
-                BackupJobModel.DatabaseBackupJobs.Add(backupToBeAdded);
-                Debug.WriteLine(BackupJobModel.DatabaseBackupJobs.Count);
+                //BackupJobModel.DatabaseBackupJobs.Add(backupToBeAdded);
+                //Debug.WriteLine(BackupJobModel.DatabaseBackupJobs.Count);
             }
             catch (Exception e)
             {

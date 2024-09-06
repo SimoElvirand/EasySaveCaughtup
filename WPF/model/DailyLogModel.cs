@@ -15,6 +15,9 @@ namespace WPF
         public string FileSize { get; set; }
         public double FileTransferTime { get; set; }
         public string Time { get; set; }
+        private static Mutex mutuale = new Mutex(false);
+
+        private readonly object fileLock = new object();
 
         public static void JsonLogger(string name,string fileSource,string fileTarget, DateTime time, double fileTransferTime, long fileSize)
         {
@@ -26,9 +29,12 @@ namespace WPF
             //write on json 
             DailyLogModel m = new DailyLogModel(name, fileSource, fileTarget, fileTransferTime, time, fileSize);
             string jsonContent = JsonSerializer.Serialize(m, new JsonSerializerOptions { WriteIndented = true });
-            File.AppendAllText(Path.Combine(path, fileName), $"{jsonContent},");
+            mutuale.WaitOne();
+                File.AppendAllText(Path.Combine(path, fileName), $"{jsonContent},");
+            mutuale.ReleaseMutex();
             
-           
+
+
         }
         public static void XMLLogger(string name, string fileSource, string fileTarget, DateTime time, double fileTransferTime, long fileSize)
         {

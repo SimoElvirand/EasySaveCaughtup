@@ -49,6 +49,7 @@ namespace WPF.view
             // Create an instance of the view model
             BackupJobViewModel viewModel = new BackupJobViewModel();
             //BackupJobModel p = new BackupJobModel();
+            //p.StartTcpServer();
             // Set the view model as the DataContext for the view
             this.DataContext = viewModel;
           //DataContext = p;
@@ -212,6 +213,12 @@ namespace WPF.view
             }
 
             return totalSize;
+        }
+
+        private void pauseclick(object sender, RoutedEventArgs e)
+        {
+            //BackupJobModel p = new BackupJobModel();
+            //p.StartTcpServer();
         }
     }
 }

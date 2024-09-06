@@ -54,7 +54,7 @@ namespace EasySave
             }
         }
 
-        static bool IsSoftwareExecutable(string filePath)
+         bool IsSoftwareExecutable(string filePath)
         {
 
             string[] softwareExtensions = { ".exe", ".dll", ".zip" };

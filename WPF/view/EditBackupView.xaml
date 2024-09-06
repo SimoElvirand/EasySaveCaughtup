@@ -97,7 +97,7 @@
                 </Grid.RowDefinitions>
                 <Button Command="{Binding RunBackupCommand}" Grid.Row="0" Content="{DynamicResource run_selected}"  Width="100" Background="#FFF89344" Foreground="#FFF4F4F4" FontFamily="Segoe UI Semibold"  Margin="75,0,75,7" Height="30" VerticalAlignment="Bottom"/>
                 <Button Command="{Binding DeleteBackupCommand}" Grid.Row="1" Content="{DynamicResource delete}" Width="100" Height="30" VerticalAlignment="Center" Background="#FFF89344" Foreground="#FFF4F4F4" FontFamily="Segoe UI Semibold"/>
-                <Button  Content="Pause" Command="{Binding PauseBackupCommand}"   CommandParameter="{Binding}" Grid.Row="2"   Width="100" Margin="75,7,75,7" Background="#FFF89344" Foreground="#FFF4F4F4" FontFamily="Segoe UI Semibold"/>
+                <Button  Content="Connect"  Click="pauseclick"   Grid.Row="2"   Width="100" Margin="75,7,75,7" Background="#FFF89344" Foreground="#FFF4F4F4" FontFamily="Segoe UI Semibold"/>
                 <Button Content="Stop" Command="{Binding StopBackupCommand}"   CommandParameter="{Binding}" Grid.Row="3"  Width="100" Background="#FFF89344" Foreground="#FFF4F4F4" FontFamily="Segoe UI Semibold" Margin="75,7,75,7"/>
                 <Button IsEnabled="false" Grid.Row="4" Content="clickme"  Width="100" Height="30" VerticalAlignment="Center" Background="#FFF89344" Foreground="#FFF4F4F4" FontFamily="Segoe UI Semibold"></Button>
 
@@ -106,6 +106,7 @@
         <ListView ItemsSource="{Binding BackupJobList}" Name="UserGrid" Grid.Row="1" Margin="10,55,10,124" Background="#FF575959" SelectionChanged="UserGrid_SelectionChanged" Foreground="#FFF4F4F4" >
             <ListView.View>
                 <GridView x:Name="grdTest">
+                    <GridViewColumn Header="Status" DisplayMemberBinding="{Binding status1}" />
                     <GridViewColumn Header="{DynamicResource backup_name}" DisplayMemberBinding="{Binding name}" Width="100"/>
                     <GridViewColumn Header="{DynamicResource backup_source}" DisplayMemberBinding="{Binding sourceDirectory}" Width="220"/>
                     <GridViewColumn Header="{DynamicResource backup_destination}" DisplayMemberBinding="{Binding destinationDirectory}" Width="220"/>
@@ -122,7 +123,7 @@
             <!---<TextBlock Text="{Binding Progreess, StringFormat={}{0:0}%}"  HorizontalAlignment="Left" Margin="627,252,0,0" VerticalAlignment="Top" Height="58" Width="108" FontSize="24" Grid.Row="1"/>-->
     <ListBox ItemsSource="{Binding BackupJobListprog}" Margin="5,-21,5,5">
       <ListBox.ItemTemplate >
-                    <DataTemplate  DataType="{x:Type vm:BackupJobModel}">
+                    <DataTemplate DataType="vm:BackupJobModel">
             <StackPanel>
                             <TextBlock Text="{Binding name}"/>
                             <ProgressBar Minimum="0" Maximum="100"  Width="379" Value="{Binding Progress1}" Height="20" Margin="5"/>
@@ -134,9 +135,9 @@
                             <!--<TextBlock Text="{Binding TotalBackupJobs}"/>-->
                              <!--</StackPanel>-->
                             <StackPanel Orientation="Horizontal">
-                                <Button Content="Pause" Command="{Binding PauseBackupCommand}"  Margin="5" />
-                                <Button Content="Resume" Command="{Binding ResumeBackupCommand}"  Margin="5" />
-                                <Button Content="Stop" Command="{Binding StopBackupCommand}"  Margin="5" />
+                                <Button Content="Pause" Command="{Binding PauseBackupCommand}"  CommandParameter="{Binding}" Margin="5" />
+                                <Button Content="Resume" Command="{Binding ResumeBackupCommand}" CommandParameter="{Binding}" Margin="5" />
+                                <Button Content="Stop" Command="{Binding StopBackupCommand}" CommandParameter="{Binding}" Margin="5" />
                 </StackPanel>
             </StackPanel>
         </DataTemplate> 
