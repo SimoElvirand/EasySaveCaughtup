@@ -17,6 +17,7 @@ using System.Windows.Shapes;
 using System.Xml.Linq;
 using WPF.model;
 using WPF.view_model;
+using WPF.Network;
 
 namespace WPF.model
 {
@@ -46,7 +47,8 @@ namespace WPF.model
         private  ManualResetEventSlim pauseEvent ;
 
         private  BackupJobModel backupJobModel;
-        private  int c;
+        private  int c = 0;
+        private int y = 0;
         private CancellationTokenSource cancellationTokenSource;
 
         public string status1
@@ -83,35 +85,12 @@ namespace WPF.model
         public ICommand ResumeBackupCommand { get; }
         private TcpListener _tcpListener;
         private CancellationTokenSource _cancellationTokenSource;
-        //public ICommand PauseCommand
-        //{
-            //get { return _pauseCommand; }
-            //set
-            //{
-              //  _pauseCommand = value;
-               // OnPropertyChanged(nameof(PauseCommand));
-               // Debug.WriteLine("tous est en marche pause" + Progress1);
-           // }
-        //}
+      
+        private static readonly object _lock = new object();
 
-        //public ICommand StopCommand
-        //{
-            //get { return _stopCommand; }
-            //set
-            //{
-               // _stopCommand = value;
-                //OnPropertyChanged(nameof(StopCommand));
-           // }
-       // }
+        
 
-        //public Thread Thread
-        //{
-           // get { return _thread; }
-            //set {
-              //  _thread = value;
-               // OnPropertyChanged(nameof(StopCommand)); 
-              //  }
-       // }
+
         public double FileBackedUp
         {
             get { return _FileBackedUp; }
@@ -140,11 +119,7 @@ namespace WPF.model
             }
         }
 
-        //public BackupJobModel BackupJobModel1
-        //{
-           // get { return backupJobModel; }
-            //set { backupJobModel = value; }
-       // }
+       
         public int TotalBackupJobs
         {
             get { return c; }
@@ -181,14 +156,7 @@ namespace WPF.model
             get { return _logChoice; }
             set { _logChoice = value;}
         }
-        //private void BackupJobModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
-        //{
-        //  if (e.PropertyName == nameof(Progress1))
-        // {
-        // Notify the BackupJobViewModel about the change
-        // BackupJobViewModel.Instance.Progreess = Progress1;
-        //}
-        // }
+
 
        
       
@@ -202,22 +170,25 @@ namespace WPF.model
             this.lastTimeRuned = "Never";
             this.Progress1 = 0;
             this.status1 = "wait";
-            //pauseEvent = new ManualResetEventSlim(true); // Initially not paused
-            //CancellationTokenSource = new CancellationTokenSource();
             PauseBackupCommand = new RelayCommand(PauseBackup);
             StopBackupCommand = new RelayCommand(StopBackup);
             ResumeBackupCommand = new RelayCommand(ResumeBackup);
             _cancellationTokenSource = new CancellationTokenSource();
-           // StartTcpServer();
-
-            // PropertyChanged += BackupJobModel_PropertyChanged;
+            
+            
+            Thread HandleStart = new Thread(() => { StartTcpServer(); });
+            HandleStart.Start();
+            
+            
         }
+
+     
 
         public async void StartTcpServer()
         {
             // Création et démarrage du serveur TCP sur le port 5000
             //_cancellationTokenSource = new CancellationTokenSource();
-            _tcpListener = new TcpListener(IPAddress.Any, 5000);
+            TcpListener _tcpListener = TcpListenerSingleton.GetInstance();
             _tcpListener.Start();
             Console.WriteLine("Server started on port 5000");
             var t = true;
@@ -228,38 +199,37 @@ namespace WPF.model
                 TcpClient client = await _tcpListener.AcceptTcpClientAsync();
                 // Gestion de la connexion du client dans une tâche séparée
                 _ = HandleClientAsync(client, _cancellationTokenSource.Token);
+                
             }
         }
-        private async Task ListenForClients(CancellationToken cancellationToken)
-        {
-            while (!cancellationToken.IsCancellationRequested)
-            {
-                try
-                {
-                    var client = await _listener.AcceptTcpClientAsync();
-                    Task.Run(() => HandleClient(client, cancellationToken));
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Error accepting client: {ex.Message}");
-                }
-            }
-        }
+        // private async Task ListenForClients(CancellationToken cancellationToken)
+        //{
+        //while (!cancellationToken.IsCancellationRequested)
+        //{
+        // try
+        //{
+        //var client = await _tcpListener.AcceptTcpClientAsync();
+        //await Task.Run(() => HandleClient(client, cancellationToken));
+        //}
+        // catch (Exception ex)
+        //{
+        // Console.WriteLine($"Error accepting client: {ex.Message}");
+        // }
+        // }
+        //}
         private async Task HandleClient(TcpClient client, CancellationToken cancellationToken)
         {
-            using (client)
-            {
-                var stream = client.GetStream();
-                var buffer = new byte[1024];
-                int bytesRead;
+            NetworkStream stream = client.GetStream();
+            var buffer = new byte[1024];
+            int bytesRead;
 
-                while ((bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length, cancellationToken)) != 0)
-                {
-                    var message = Encoding.UTF8.GetString(buffer, 0, bytesRead);
-                    Console.WriteLine($"Received: {message}");
-                    // Handle the received message (e.g., start, stop, pause backup jobs)
-                    HandleMessage(message);
-                }
+            while ((bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length, cancellationToken)) != 0)
+            {
+                var message = Encoding.UTF8.GetString(buffer, 0, bytesRead);
+                Console.WriteLine($"Received: {message}");
+                // Handle the received message (e.g., start, stop, pause backup jobs)
+                Thread handleMess = new Thread(() => { HandleMessage(message); });
+                handleMess.Start();
             }
         }
 
@@ -295,7 +265,8 @@ namespace WPF.model
                 string progressMessage = Progress1.ToString();
                 byte[] buffer = Encoding.UTF8.GetBytes(progressMessage);
                 await stream.WriteAsync(buffer, 0, buffer.Length, cancellationToken);
-                _ = HandleClient(client, cancellationToken);
+                Thread Handlelistening = new Thread(() => { _ = HandleClient(client, cancellationToken); });
+                Handlelistening.Start();
             }
 
             client.Close();
@@ -306,7 +277,7 @@ namespace WPF.model
 
         public void PauseBackup()
         {
-            //CancellationTokenSource?.Cancel();
+            
             Debug.WriteLine("dddd" );
             status1 = "pause";
             pauseEvent.Reset();
@@ -315,8 +286,7 @@ namespace WPF.model
 
         public void StopBackup()
         {
-            //CancellationTokenSource?.Cancel();
-            // Add any additional logic for stopping the backup job
+           
             status1 = "stop";
             Debug.WriteLine("dddd");
             cancellationTokenSource.Cancel();
@@ -327,8 +297,7 @@ namespace WPF.model
         {
             pauseEvent.Set();
             status1 = "resume";
-            //CancellationTokenSource = new CancellationTokenSource();
-            // Add any additional logic for resuming the backup job
+           
         }
 
         public static  ObservableCollection<BackupJobModel> DatabaseBackupJobs = new ObservableCollection<BackupJobModel>();
@@ -518,8 +487,7 @@ namespace WPF.model
                     Debug.WriteLine("in process" + backupJob.Progress1);
                 }
 
-                bool success = processedFiles == totalFiles;
-                 NotifyBackupCompletion(success);
+                
 
                 foreach (DirectoryInfo diSourceSubDir in diSource.GetDirectories())
                 {
@@ -527,6 +495,8 @@ namespace WPF.model
                         diTarget.CreateSubdirectory(diSourceSubDir.Name);
                     directoryDifferentialCopy2(diSourceSubDir, nextTargetSubDir, log_choice, backupJob, cancellationToken);
                 }
+                bool success = processedFiles == totalFiles;
+                NotifyBackupCompletion(success);
                 return;
             }
 

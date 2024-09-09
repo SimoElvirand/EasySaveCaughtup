@@ -123,7 +123,7 @@
             <!---<TextBlock Text="{Binding Progreess, StringFormat={}{0:0}%}"  HorizontalAlignment="Left" Margin="627,252,0,0" VerticalAlignment="Top" Height="58" Width="108" FontSize="24" Grid.Row="1"/>-->
     <ListBox ItemsSource="{Binding BackupJobListprog}" Margin="5,-21,5,5">
       <ListBox.ItemTemplate >
-                    <DataTemplate DataType="vm:BackupJobModel">
+                    <DataTemplate >
             <StackPanel>
                             <TextBlock Text="{Binding name}"/>
                             <ProgressBar Minimum="0" Maximum="100"  Width="379" Value="{Binding Progress1}" Height="20" Margin="5"/>
